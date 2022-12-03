@@ -3,7 +3,7 @@ from . import views
 
 
 urlpatterns = [
-    path('osm', views.osmbuilding),
+    path('', views.osmbuilding),
     path('leaflet', views.leaflet),
     path('django_leaflet', views.django_leaflet)
 ]
