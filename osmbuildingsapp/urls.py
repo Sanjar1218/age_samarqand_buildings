@@ -3,6 +3,6 @@ from . import views
 
 
 urlpatterns = [
-    path('osm', views.home),
-    path('leaflet', views.home),
+    path('osm', views.osmbuilding),
+    path('leaflet', views.leaflet),
 ]
