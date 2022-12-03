@@ -111,15 +111,25 @@ var statesData ={
       "id": "relation/2230985"
 };
 
-    var map = L.map('map').setView([39.6487765, 66.9618944], 13);
+var map = L.map('map').setView([39.6487765, 66.9618944], 17);
 
-//     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//     maxZoom: 19,
-//     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-// }).addTo(map);
+async function fetchAsync (url) {
+  let response = await fetch(url);
+  let data = await response.json();
+  return data;
+}
+// text = await fetchAsync('http://127.0.0.1:8000/home/get_homes');
 
+
+// text = await fetch('http://127.0.0.1:8000/home/get_homes', {
+//     method: 'GET',
+//     headers: {
+//         'Accept': 'application/json',
+//     },
+// })
+// console.log(text);
 var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
+    maxZoom: 50,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
@@ -128,7 +138,7 @@ function highlightFeature(e) {
 
     layer.setStyle({
         weight: 5,
-        color: '#666',
+        color: '#777',
         dashArray: '',
         fillOpacity: 0.7
     });
@@ -141,19 +151,51 @@ function resetHighlight(e) {
 }
 var geojson;
 
-function onEachFeature(feature, layer) {
-    layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
-        click: zoomToFeature
+
+
+async function zoomToFeature(e) {
+  // popup fucntion
+  L.popup()
+    .setLatLng(e.latlng)
+    .setContent('<p>Hello world!<br > bu uy</p>')
+    .openOn(map);
+// zoooming or outzooming
+map.fitBounds(e.target.getBounds());
+    var layer = e.target;
+    console.log(e)
+    // setting style to building
+    layer.setStyle({
+      weight: 10,
+      color: '#222',
+      dashArray: '',
+      fillOpacity: 0.7
     });
-}
+    
+    layer.bringToFront();
+    // map.bindPopup("I am a polygon.");
 
-function zoomToFeature(e) {
-    map.fitBounds(e.target.getBounds());
-}
-
-
+    
+    text = await fetch('http://127.0.0.1:8000/home/get_homes', {
+    method: 'GET',
+    headers: {
+        'Accept': 'application/json',
+    },
+})
+console.log(text);
+// for (let i in text) {
+//   console.log(i['coordinates']);
+  
+// }
+  }
+  
+  
+function onEachFeature(feature, layer) {
+      layer.on({
+          mouseover: highlightFeature,
+          mouseout: resetHighlight,
+          click: zoomToFeature
+      });
+  }
 geojson = L.geoJson(statesData, {
     onEachFeature: onEachFeature,
 }).addTo(map);
