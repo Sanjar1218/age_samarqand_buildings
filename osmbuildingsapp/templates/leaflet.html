@@ -1,166 +1,64 @@
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
-crossorigin=""/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
 
  <!-- Make sure you put this AFTER Leaflet's CSS -->
- <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-     crossorigin=""></script>
+ <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+
 <style>
     #map { height: 480px; }
 </style>
     
-     <div id="map"></div>
+
+<div id="map"></div>
 
     
 <script>
+console.log('begin');
+const fet = []
+// getting data from database
+fetch('http://127.0.0.1:8000/home/get_homes').then(x => x.json()).then(s => {
+  for (let index = 0; index < s.buldings.length; index++) {
+    // console.log(s.buldings[index]);
+    fet.push({type: 'Feature',geometry:{ type: 'Polygon',coordinates: s.buldings[index].coordinates}})
+    
+  }
+console.log(fet);
+// creating my own data
+var statesData = {features: fet}
+  var map = L.map('map').setView([39.6487765, 66.9618944], 17);
 
-var statesData ={
-      "type": "Feature",
-      "properties": {
-        "@id": "relation/2230985",
-        "building": "university",
-        "name": "Физико-химический корпус СамГУ",
-        "type": "multipolygon"
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              66.9618944,
-              39.6487765
-            ],
-            [
-              66.961913,
-              39.6488263
-            ],
-            [
-              66.9617454,
-              39.6489021
-            ],
-            [
-              66.9611561,
-              39.6482766
-            ],
-            [
-              66.9613463,
-              39.6481734
-            ],
-            [
-              66.9613819,
-              39.6482098
-            ],
-            [
-              66.9616929,
-              39.6480495
-            ],
-            [
-              66.9615877,
-              39.647891
-            ],
-            [
-              66.9617344,
-              39.6478085
-            ],
-            [
-              66.9628899,
-              39.6490979
-            ],
-            [
-              66.9627154,
-              39.6491863
-            ],
-            [
-              66.9621922,
-              39.648634
-            ],
-            [
-              66.9618944,
-              39.6487765
-            ]
-          ],
-          [
-            [
-              66.9617926,
-              39.6486667
-            ],
-            [
-              66.962083,
-              39.648522
-            ],
-            [
-              66.9617653,
-              39.6481751
-            ],
-            [
-              66.9614749,
-              39.6483279
-            ],
-            [
-              66.9616324,
-              39.6484971
-            ],
-            [
-              66.9617926,
-              39.6486667
-            ]
-          ]
-        ]
-      },
-      "id": "relation/2230985"
-};
-
-var map = L.map('map').setView([39.6487765, 66.9618944], 17);
-
-async function fetchAsync (url) {
-  let response = await fetch(url);
-  let data = await response.json();
-  return data;
-}
-// text = await fetchAsync('http://127.0.0.1:8000/home/get_homes');
-
-
-// text = await fetch('http://127.0.0.1:8000/home/get_homes', {
-//     method: 'GET',
-//     headers: {
-//         'Accept': 'application/json',
-//     },
-// })
-// console.log(text);
-var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 50,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
-
-function highlightFeature(e) {
+  }).addTo(map);
+      
+  function highlightFeature(e) {
     var layer = e.target;
-
-    layer.setStyle({
-        weight: 5,
-        color: '#777',
-        dashArray: '',
-        fillOpacity: 0.7
+    
+  layer.setStyle({
+      weight: 5,
+      color: '#777',
+      dashArray: '',
+      fillOpacity: 0.7
     });
-
+    
     layer.bringToFront();
-}
+  }
 
-function resetHighlight(e) {
+  function resetHighlight(e) {
     geojson.resetStyle(e.target);
-}
-var geojson;
-
-
-
-async function zoomToFeature(e) {
+  }
+  var geojson;
+      
+      
+      
+  async function zoomToFeature(e) {
   // popup fucntion
-  L.popup()
+    L.popup()
     .setLatLng(e.latlng)
     .setContent('<p>Hello world!<br > bu uy</p>')
     .openOn(map);
-// zoooming or outzooming
-map.fitBounds(e.target.getBounds());
+    // zoooming or outzooming
+    map.fitBounds(e.target.getBounds());
     var layer = e.target;
     console.log(e)
     // setting style to building
@@ -170,35 +68,24 @@ map.fitBounds(e.target.getBounds());
       dashArray: '',
       fillOpacity: 0.7
     });
-    
+
     layer.bringToFront();
     // map.bindPopup("I am a polygon.");
+  }
 
-    
-    text = await fetch('http://127.0.0.1:8000/home/get_homes', {
-    method: 'GET',
-    headers: {
-        'Accept': 'application/json',
-    },
-})
-console.log(text);
-// for (let i in text) {
-//   console.log(i['coordinates']);
-  
-// }
+
+  function onEachFeature(feature, layer) {
+    layer.on({
+      mouseover: highlightFeature,
+      mouseout: resetHighlight,
+      click: zoomToFeature
+    });
   }
-  
-  
-function onEachFeature(feature, layer) {
-      layer.on({
-          mouseover: highlightFeature,
-          mouseout: resetHighlight,
-          click: zoomToFeature
-      });
-  }
-geojson = L.geoJson(statesData, {
+
+  geojson = L.geoJson(statesData, {
     onEachFeature: onEachFeature,
-}).addTo(map);
+  }).addTo(map);
 
-
+});
+  
 </script>
