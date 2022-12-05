@@ -18,5 +18,5 @@ def django_leaflet(requests: HttpRequest) -> HttpResponse:
 
     serializer = BuildingSerializer(all_buldings, many=True)
 
-    print(serializer.data)
+    # print(serializer.data)
     return render(requests, 'django_leaflet.html', context={'data': serializer.data})

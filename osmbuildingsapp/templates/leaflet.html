@@ -4,7 +4,7 @@
  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
 
 <style>
-    #map { height: 600px; }
+    #map { height: 1000px; background-color: black;}
 </style>
     
 
@@ -26,17 +26,17 @@ console.log(fet);
 var statesData = {features: fet}
   var map = L.map('map').setView([39.6487765, 66.9618944], 17);
 
-  var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 50,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-  }).addTo(map);
+  // var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  //   maxZoom: 50,
+  //   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  // }).addTo(map);
       
   function highlightFeature(e) {
     var layer = e.target;
     
   layer.setStyle({
-      weight: 5,
-      color: '#777',
+      weight: 3,
+      color: '#fff',
       dashArray: '',
       fillOpacity: 0.7
     });
@@ -49,6 +49,26 @@ var statesData = {features: fet}
   }
   var geojson;
       
+  function getColor(d) {
+    return d > 1000 ? '#f5fe95' :
+           d > 500  ? '#ff7801' :
+           d > 200  ? '#ff0109' :
+           d > 100  ? '#0066fe' :
+           d > 50   ? '#01bbff' :
+           d > 2   ? '#29dfff' :
+           d > 1   ? '#09ff01' :
+                      '#09ff01';
+  }
+
+  function style(feature) {
+      // console.log(feature.geometry.coordinates)
+      return {
+          fillColor: getColor(Math.floor(Math.random() * 100)),
+          weight: 0,
+          opacity: 1,
+          fillOpacity: 0.7
+      };
+  }
       
       
   async function zoomToFeature(e) {
@@ -58,13 +78,13 @@ var statesData = {features: fet}
     .setContent('<p>Hello world!<br > bu uy</p>')
     .openOn(map);
     // zoooming or outzooming
-    map.fitBounds(e.target.getBounds());
+    // map.fitBounds(e.target.getBounds());
     var layer = e.target;
     console.log(e)
     // setting style to building
     layer.setStyle({
-      weight: 10,
-      color: '#222',
+      weight: 3,
+      color: '#fff',
       dashArray: '',
       fillOpacity: 0.7
     });
@@ -84,6 +104,7 @@ var statesData = {features: fet}
 
   geojson = L.geoJson(statesData, {
     onEachFeature: onEachFeature,
+    style: style
   }).addTo(map);
 
 });

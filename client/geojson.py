@@ -7,7 +7,7 @@ url = 'http://127.0.0.1:8000/'
 with open('export.geojson', 'r', encoding='utf-8') as f:
     data = json.load(f)
 
-features = data['features']
+features = data['features'][:2000]
 
 print(len(features))
 

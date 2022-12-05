@@ -20,6 +20,8 @@
     <!-- {{ data}} -->
 
 <script>
+
+console.log("{{data|escapejs}}");
 var map = L.map('map').setView([39.6487765, 66.9618944], 17);
 
 var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
