@@ -19,65 +19,67 @@
     
     <!-- {{ data}} -->
 
-<script>
+    <script>    
 
-console.log("{{data|escapejs}}");
-var map = L.map('map').setView([39.6487765, 66.9618944], 17);
+        var text = "{{data|escapejs}}";
+        var statesData = JSON.parse(text);
 
-var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 50,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
+        var map = L.map('map').setView([39.6487765, 66.9618944], 17);
 
-function highlightFeature(e) {
-    var layer = e.target;
-    
-layer.setStyle({
-    weight: 5,
-    color: '#777',
-    dashArray: '',
-    fillOpacity: 0.7
-    });
-    
-    layer.bringToFront();
-}
+        var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 50,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
 
-function resetHighlight(e) {
-    geojson.resetStyle(e.target);
-}
-var geojson;
-    
-    
-    
-function zoomToFeature(e) {
-    // popup fucntion
-    L.popup().setLatLng(e.latlng).setContent('<p>Hello world!<br > bu uy</p>').openOn(map);
-    // zoooming or outzooming
-    map.fitBounds(e.target.getBounds());
-    var layer = e.target;
-    console.log(e)
-    // setting style to building
-    layer.setStyle({
-    weight: 10,
-    color: '#222',
-    dashArray: '',
-    fillOpacity: 0.7
-    });
-    
-    layer.bringToFront();}
+        function highlightFeature(e) {
+            var layer = e.target;
+            
+        layer.setStyle({
+            weight: 5,
+            color: '#777',
+            dashArray: '',
+            fillOpacity: 0.7
+            });
+            
+            layer.bringToFront();
+        }
+
+        function resetHighlight(e) {
+            geojson.resetStyle(e.target);
+        }
+        var geojson;
+            
+            
+            
+        function zoomToFeature(e) {
+            // popup fucntion
+            L.popup().setLatLng(e.latlng).setContent('<p>Hello world!<br > bu uy</p>').openOn(map);
+            // zoooming or outzooming
+            map.fitBounds(e.target.getBounds());
+            var layer = e.target;
+            console.log(e)
+            // setting style to building
+            layer.setStyle({
+            weight: 10,
+            color: '#222',
+            dashArray: '',
+            fillOpacity: 0.7
+            });
+            
+            layer.bringToFront();}
 
 
-function onEachFeature(feature, layer) {
-  layer.on({
-    mouseover: highlightFeature,
-    mouseout: resetHighlight,
-    click: zoomToFeature
-  });
-  }
-  geojson = L.geoJson(statesData, {
-    onEachFeature: onEachFeature,
-  }).addTo(map);
-  
-</script>
+        function onEachFeature(feature, layer) {
+        layer.on({
+            mouseover: highlightFeature,
+            mouseout: resetHighlight,
+            click: zoomToFeature
+        });
+        }
+        geojson = L.geoJson(statesData, {
+            onEachFeature: onEachFeature,
+        }).addTo(map);
+        
+    </script>
 </body>
 </html>
