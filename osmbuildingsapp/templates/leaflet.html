@@ -12,7 +12,7 @@
 
     
 <script>
-console.log('begin');
+// console.log('begin');
 const fet = []
 // getting data from database
 fetch('http://127.0.0.1:8000/home/get_homes').then(x => x.json()).then(s => {
@@ -21,7 +21,7 @@ fetch('http://127.0.0.1:8000/home/get_homes').then(x => x.json()).then(s => {
     fet.push({type: 'Feature',geometry:{ type: 'Polygon',coordinates: s.buldings[index].coordinates}})
     
   }
-console.log(fet);
+// console.log(fet);
 // creating my own data
 var statesData = {features: fet}
   var map = L.map('map').setView([39.6487765, 66.9618944], 17);
@@ -62,8 +62,9 @@ var statesData = {features: fet}
 
   function style(feature) {
       // console.log(feature.geometry.coordinates)
+      // console.log(Math.random() * 1000)
       return {
-          fillColor: getColor(Math.floor(Math.random() * 100)),
+          fillColor: getColor(Math.floor(Math.random() * 1000)),
           weight: 0,
           opacity: 1,
           fillOpacity: 0.7
@@ -98,7 +99,7 @@ var statesData = {features: fet}
     // zoooming or outzooming
     // map.fitBounds(e.target.getBounds());
     var layer = e.target;
-    console.log(e)
+    // console.log(e)
     // setting style to building
     layer.setStyle({
       weight: 3,
