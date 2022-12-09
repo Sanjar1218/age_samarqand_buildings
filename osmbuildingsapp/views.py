@@ -8,7 +8,20 @@ import json
 
 
 def home(requests: HttpRequest) -> HttpResponse:
-    return render(requests, 'pages/home_page.html')
+    all_buldings = Building.objects.all()
+    lst = []
+    serializer = BuildingSerializer(all_buldings, many=True)
+    for i in serializer.data:
+        lst.append({
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": i["coordinates"]
+            }
+        })
+    return render(requests,
+                  'pages/home_page.html',
+                  context={'data': json.dumps(lst)})
 
 
 def osmbuilding(requests: HttpRequest) -> HttpResponse:

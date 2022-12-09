@@ -1,0 +1,18 @@
+input[type="range"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 50px;
+  
+  height: 500px;
+  appearance: slider-vertical;
+}
+
+.sidebar {
+  position: relative;
+  height: 90vh;
+}
+
+.maps {
+  height: 100%;
+}
