@@ -7,6 +7,10 @@ from home.serializers import BuildingSerializer
 import json
 
 
+def home(requests: HttpRequest) -> HttpResponse:
+    return render(requests, 'pages/home_page.html')
+
+
 def osmbuilding(requests: HttpRequest) -> HttpResponse:
     return render(requests, "home.html")
 
@@ -20,7 +24,14 @@ def django_leaflet(requests: HttpRequest) -> HttpResponse:
     lst = []
     serializer = BuildingSerializer(all_buldings, many=True)
     for i in serializer.data:
-        lst.append({"type": "Feature", "geometry": {
-                   "type": "Polygon", "coordinates": i["coordinates"]}})
+        lst.append({
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": i["coordinates"]
+            }
+        })
 
-    return render(requests, "django_leaflet.html", context={"data": json.dumps(lst)})
+    return render(requests,
+                  "django_leaflet.html",
+                  context={"data": json.dumps(lst)})
