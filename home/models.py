@@ -5,7 +5,7 @@ class Building(models.Model):
     address = models.CharField(max_length=255)
     type_of_building = models.CharField(max_length=255)
     # count_floor = models.IntegerField(default=1)
-    date = models.DateField()
+    date = models.IntegerField()
     # center = models.JSONField()
     coordinates = models.JSONField()
 

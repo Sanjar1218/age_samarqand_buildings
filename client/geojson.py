@@ -1,6 +1,7 @@
 import json
 import requests
 import datetime
+import random
 
 url = 'http://127.0.0.1:8000/'
 
@@ -17,7 +18,7 @@ for feature in features:
     dct = {
         'address': 'yoq',
         'type_of_building': 'yoq',
-        'date': str(datetime.date.today()),
+        'date': random.randrange(1000, 2023),
         'coordinates': points
     }
     r = requests.post(url + 'home/create_home', json=dct)

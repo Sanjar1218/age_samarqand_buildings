@@ -29,7 +29,9 @@ def get_homes(request: Request) -> Response:
 @api_view(['POST'])
 def update_home(request: Request, id) -> Response:
     building = Building.objects.get(id=id)
-    serializer = BuildingSerializer(building, data=request.data)
+    print(building)
+    print(request.data)
+    serializer = BuildingSerializer(building, data=request.data, partial=True)
     if serializer.is_valid():
         serializer.save()
         return Response({'status': 'updated'})
