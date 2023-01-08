@@ -13,9 +13,11 @@ import json
 @api_view(['POST'])
 def create_home(request: Request) -> Response:
     serializer = BuildingSerializer(data=request.data)
+
     if serializer.is_valid():
         serializer.save()
         return Response({'status': 'created'})
+
     return Response({'status': 'bad', 'errros': serializer.errors})
 
 
@@ -39,18 +41,15 @@ def get_homes(request: Request) -> Response:
                 "coordinates": i["coordinates"]
             }
         })
-    return Response({
-        'buildings': json.dumps(lst),
-        'setviews': json.dumps(setviews)
-    })
+
+    return Response({'buildings': lst, 'setviews': setviews})
 
 
 @api_view(['POST'])
 def update_home(request: Request, id) -> Response:
     building = Building.objects.get(id=id)
-    print(building)
-    print(request.data)
     serializer = BuildingSerializer(building, data=request.data, partial=True)
+
     if serializer.is_valid():
         serializer.save()
         return Response({'status': 'updated'})
@@ -63,7 +62,9 @@ def delete_home(request: Request, id) -> Response:
         building = Building.objects.get(id=id)
         building.delete()
         return Response({'status': 'deleted'})
+
     except ObjectDoesNotExist:
         return Response({'status': 'does not exists bulding'})
+
     except MultipleObjectsReturned:
         return Response({'status': 'multiple objects returned'})
