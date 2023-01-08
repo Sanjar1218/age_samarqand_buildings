@@ -7,6 +7,8 @@ from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from .serializers import BuildingSerializer
 from .models import Building
 
+import json
+
 
 @api_view(['POST'])
 def create_home(request: Request) -> Response:
@@ -20,10 +22,27 @@ def create_home(request: Request) -> Response:
 @api_view(['GET'])
 def get_homes(request: Request) -> Response:
     all_buldings = Building.objects.all()
+    lst = []
+    setviews = [39.6487765, 66.9618944]
 
     serializer = BuildingSerializer(all_buldings, many=True)
 
-    return Response({'buldings': serializer.data})
+    for i in serializer.data:
+        lst.append({
+            "type": "Feature",
+            "id": i['id'],
+            "address": i['address'],
+            "type_of_building": i['type_of_building'],
+            "age": i['date'],
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": i["coordinates"]
+            }
+        })
+    return Response({
+        'buildings': json.dumps(lst),
+        'setviews': json.dumps(setviews)
+    })
 
 
 @api_view(['POST'])
