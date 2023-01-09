@@ -15,7 +15,7 @@
 // console.log('begin');
 const fet = []
 // getting data from database
-fetch('http://127.0.0.1:8000/home/get_homes').then(x => x.json()).then(s => {
+fetch('http://agesamarqand.pythonanywhere.com/home/get_homes').then(x => x.json()).then(s => {
   for (let index = 0; index < s.buldings.length; index++) {
     // console.log(s.buldings[index]);
     fet.push({type: 'Feature',geometry:{ type: 'Polygon',coordinates: s.buldings[index].coordinates}})
